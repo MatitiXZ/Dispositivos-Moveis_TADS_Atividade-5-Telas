@@ -15,7 +15,7 @@ export default function paginainicial({ navigation }) {
 
   const carregarContatos = async () => {
     try {
-      const response = await axios.get("http://localhost:8081/contatos");
+      const response = await axios.get("http://localhost:3000/contatos");
       setContatos(response.data);
     } catch (error) {
       console.error("Erro ao carregar contatos:", error);

@@ -3,28 +3,46 @@ import { View, StyleSheet, Alert } from "react-native";
 import { Text, Input, Button } from "react-native-elements";
 import { TextInputMask } from "react-native-masked-text";
 import axios from "axios";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "./login";
+
+
+const novoUser = async (email, password) => {
+  return createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+      // ...
+    })
+
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ..
+    });
+}
 
 export default function Cadastro() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [nome, setNome] = useState("");
-  const [cpf, setCpf] = useState("");
+  // const [nome, setNome] = useState("");
+  // const [cpf, setCpf] = useState("");
 
   const handleCadastro = async () => {
-    const novoUsuario = { nome, cpf, email, senha };
+    const novoUsuario = await novoUser(email,senha);
     console.log(novoUsuario);
 
-    try {
-      await axios.post("http://localhost:8081/users", novoUsuario);
-      Alert.alert("Sucesso", "Usuário cadastrado com sucesso!");
-      setNome("");
-      setCpf("");
-      setEmail("");
-      setSenha("");
-    } catch (error) {
-      console.error(error);
-      Alert.alert("Erro", "Falha ao cadastrar usuário");
-    }
+    // try {
+    //   await axios.post("http://localhost:8081/users", novoUsuario);
+    //   Alert.alert("Sucesso", "Usuário cadastrado com sucesso!");
+    //   setNome("");
+    //   setCpf("");
+    //   setEmail("");
+    //   setSenha("");
+    // } catch (error) {
+    //   console.error(error);
+    //   Alert.alert("Erro", "Falha ao cadastrar usuário");
+    // }
   };
 
   return (
@@ -33,7 +51,7 @@ export default function Cadastro() {
         Cadastro
       </Text>
 
-      <Input
+      {/* <Input
         label="Nome"
         value={nome}
         onChangeText={setNome}
@@ -46,7 +64,7 @@ export default function Cadastro() {
         onChangeText={setCpf}
         placeholder="Digite seu CPF"
         style={styles.input}
-      />
+      /> */}
       <Input
         label="Email"
         value={email}
@@ -92,3 +110,4 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 });
+
